@@ -1,0 +1,53 @@
+/* Mobile-first base — AC-N1 */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Ensure tap targets are large enough on mobile */
+button {
+  min-height: 36px;
+}
+
+textarea,
+input[type="text"] {
+  font-size: 16px; /* prevent iOS zoom on focus */
+}
+
+/* Dark mode — AC-4, AC-5, AC-6 (BKI-002) */
+body.dark {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+body.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+body.dark .text-gray-700,
+body.dark .text-gray-600,
+body.dark .text-gray-800 {
+  color: #d1d5db !important;
+}
+
+body.dark .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+body.dark .border-gray-300 {
+  border-color: #374151 !important;
+}
+
+body.dark input,
+body.dark textarea {
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+body.dark #dark-toggle {
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+body.dark #dark-toggle:hover {
+  background-color: #374151;
+}
