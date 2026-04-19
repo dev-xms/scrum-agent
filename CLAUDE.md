@@ -67,46 +67,24 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
-## 5. Scrum-Agent Workflow
+## 5. Scrum Agent Workflow (6-Phase Lifecycle)
 
-**When working in a `project/` directory, follow the Scrum-Agent pattern.**
+You must follow these phases sequentially for every non-trivial task:
+1.  **Intake (BA)**: Ingest raw requirements from the `requirements/` folder and cross-reference them with `references/retro-knowledge.md` to avoid historical mistakes.
+    *   *Command*: `/scrum-ba-intake [raw-requirement]`
+2.  **Design (Architect)**: Perform **Surgical Impact Analysis** to identify the minimum set of files required and document technical tradeoffs in an Architectural Decision Record (ADR).
+    *   *Command*: `/scrum-architect-design`
+3.  **TDD (QA)**: Define a **failing (Red) test suite** that directly maps to the Gherkin Acceptance Criteria defined in Phase 1.
+    *   *Command*: `/tdd-spec-generator`
+4.  **Execute (Dev)**: Perform surgical implementation to pass the tests while adhering to the **Simplicity First** principle (no speculative code or "ghost work").
+    *   *Command*: `/scrum-executor`
+5.  **Verify (Audit)**: Run the full test suite one final time to ensure consistency, verify the **Definition of Done (DoD)**, and update `CHANGELOG.md`.
+    *   *Command*: `/tdd-verifier`
+6.  **Retro (Master)**: Perform **Log Rotation** to preserve session memory and append new technical insights to `references/retro-knowledge.md`.
+    *   *Command*: `/scrum-retro-analyst`
 
-Full schema: `SCRUM-AGENT.md`. Summary of non-negotiable rules:
-
-### Role
-You are a Scrum team member, not a chatbot. Every unit of work is a Sprint Backlog Item.
-
-### Directory contract
-| Path | Rule |
-|------|------|
-| `project/requirements/` | Read-only. Never create, modify, or delete. |
-| `project/sprints/` | One `BKI-XXX.md` per backlog item. |
-| `project/increment/` | The wiki. You write here. |
-| `project/log.md` | Append-only. Write before each phase, never after. |
-
-### The 5 phases — in order, no skipping
-```
-[PLANNING]    → backlog item created, INVEST evaluated
-[REFINEMENT]  → DoR verified, source confirmed readable
-[EXECUTION]   → analysis, page architecture, contradiction check
-[INCREMENT]   → wiki files written, index updated
-[DONE]        → DoD checked, orphan scan, sprint closed
-```
-
-### Hard rules
-- **Log before you act.** Write the log entry for a phase before starting that phase.
-- **DoR is a gate.** Do not proceed to Execution if any DoR item fails. Stop and report.
-- **DoD is a gate.** Do not close a sprint until every DoD checkbox passes.
-- **No silent overwrites.** If new source contradicts an existing increment page, surface it and ask before writing.
-- **Session start.** Read `project/log.md` first. Report any open (non-`[DONE]`) sprints before doing anything else.
-
-### Every increment page must have
-```yaml
 ---
-type: source | entity | concept | comparison | overview
-sprint_id: BKI-XXX
-summary: "one sentence"
-sources: ["requirements/filename"]
-updated: YYYY-MM-DD
+
+**Traceability Rule**: You **MUST** log every atomic step to `log.md` using the **Log-before-act protocol** to ensure the audit trail remains intact even if a session ends unexpectedly. Every phase transition must be recorded before starting the phase (e.g., using `!echo` or `scrum_guard.py`) to maintain deterministic session resumption.
+
 ---
-```
