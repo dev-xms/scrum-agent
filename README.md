@@ -85,3 +85,14 @@ This ensures every script invocation produces a traceable audit record and skill
     - Consult `references/project-structure-guide.md` for language-specific `src/` and `tests/unit/` layouts (Java, Go, Python, TypeScript, React).
 2.  **Frontmatter Standards**: Skills must define `allowed-tools` to grant Claude permission to execute scripts without per-use approval.
 3.  **Session Resume**: Users should begin every session with the **Session Resume Protocol**, asking Claude to review the log and report open sprints to prevent redundant "ghost work".
+
+---
+
+### 🍽️ The Smart Plate - Demo Project
+The Smart Plate is a lightweight, web-based recipe management system built to solve the "what's for dinner?" dilemma. Beyond being a tool for home cooks, this project serves as a Scrum Demonstration, showcasing how agile principles drive incremental delivery, high-quality code, and user-centric features.
+
+#### 💻 Clone the demo project branch:
+Bash
+```
+git clone -b sample/project/smart_plate https://github.com/dev-xms/scrum-agent.git
+```
