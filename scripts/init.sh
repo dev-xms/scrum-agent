@@ -22,4 +22,9 @@ touch \
   "$ROOT/tests/.gitkeep" \
   "$ROOT/references/.gitkeep"
 
+# Append-only audit log entries for scripts-records.log
+LOGFILE="$ROOT/logs/scripts-records.log"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INVOKE] init.sh args=[$ROOT]" >> "$LOGFILE"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] [RESULT] init.sh status=OK detail=skeleton created at $ROOT" >> "$LOGFILE"
+
 echo "Project skeleton created at: $ROOT"
