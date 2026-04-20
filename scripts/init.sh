@@ -7,10 +7,13 @@ mkdir -p \
   "$ROOT/adr" \
   "$ROOT/backlog" \
   "$ROOT/logs" \
+  "$ROOT/logs/archive" \
   "$ROOT/requirements" \
   "$ROOT/src" \
   "$ROOT/tests" \
-  "$ROOT/test-results" \
+  "$ROOT/tests/unit" \
+  "$ROOT/tests/e2e" \
+  "$ROOT/tests/results" \
   "$ROOT/scripts" \
   "$ROOT/references"
 
@@ -18,10 +21,13 @@ touch \
   "$ROOT/adr/.gitkeep" \
   "$ROOT/backlog/.gitkeep" \
   "$ROOT/logs/.gitkeep" \
+  "$ROOT/logs/archive/.gitkeep" \
   "$ROOT/requirements/.gitkeep" \
   "$ROOT/src/.gitkeep" \
   "$ROOT/tests/.gitkeep" \
-  "$ROOT/test-results/.gitkeep" \
+  "$ROOT/tests/unit/.gitkeep" \
+  "$ROOT/tests/e2e/.gitkeep" \
+  "$ROOT/tests/results/.gitkeep" \
   "$ROOT/references/.gitkeep"
 
 # Append-only audit log entries for scripts-records.log
