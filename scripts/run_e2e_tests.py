@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Gate script: run Playwright E2E tests and save artifact.
-Usage: python3 scripts/run_e2e_tests.py BKI-XXX
+Usage: python3 scripts/run_e2e_tests.py BKI-XXX [sprint-folder]
+sprint-folder defaults to BKI-XXX if omitted.
 """
 import sys, os, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -9,13 +10,15 @@ from script_logger import log_invocation, log_result
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python3 scripts/run_e2e_tests.py <BKI-ID>")
+        print("Usage: python3 scripts/run_e2e_tests.py <BKI-ID> [sprint-folder]")
         sys.exit(1)
 
     bki = sys.argv[1]
-    log_invocation("run_e2e_tests.py", [bki])
-    os.makedirs("logs/test-results", exist_ok=True)
-    artifact = f"logs/test-results/{bki}_e2e.txt"
+    sprint_folder = sys.argv[2] if len(sys.argv) >= 3 else bki
+    log_invocation("run_e2e_tests.py", [bki, sprint_folder])
+    artifact_dir = f"test-results/{sprint_folder}"
+    os.makedirs(artifact_dir, exist_ok=True)
+    artifact = f"{artifact_dir}/{bki}_e2e.txt"
 
     result = subprocess.run(
         ["npm", "run", "test:e2e"],

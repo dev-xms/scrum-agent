@@ -40,7 +40,7 @@ To ensure continuity across sessions, the agent utilizes specific Claude Code su
 Process integrity is enforced by **executable logic** rather than natural language alone:
 *   **Definition of Ready (DoR)** *(Phase 1 → 2)*: A task cannot enter Phase 2 until programmatically verified as **INVEST** via `invest_validator.py`.
 *   **Red Phase Gate** *(Phase 3 → 4)*: A task cannot enter Phase 4 until the test suite is confirmed **failing** via `run_unit_tests.py` / `run_e2e_tests.py`. Implementation must not exist yet.
-*   **Definition of Done (DoD)** *(Phase 5 → 6)*: A task is not complete until 100% of Gherkin ACs pass and test artifacts exist in `logs/test-results/`.
+*   **Definition of Done (DoD)** *(Phase 5 → 6)*: A task is not complete until 100% of Gherkin ACs pass and test artifacts exist in `test-results/Sprint-N-BKI-XXX/`.
 *   **Log Integrity**: All logging is handled via specialized scripts (e.g., `scrum_guard.py`) to ensure an **append-only** audit trail.
 
 ## 6. Directory Specification
@@ -50,4 +50,5 @@ Process integrity is enforced by **executable logic** rather than natural langua
 | `references/` | Level 3 static documentation (DoR/DoD checklists, style guides). |
 | `scripts/` | Executable deterministic logic for validation and TDD. |
 | `logs/log.md` | Append-only audit trail recording phase transitions. |
-| `tests/` | Verifiable test result artifacts for every BKI. |
+| `tests/` | Unit and E2E test code (`app.test.js`, `tests/e2e/*.spec.js`). |
+| `test-results/Sprint-N-BKI-XXX/` | Per-sprint artifacts: `BKI-XXX_unit.txt`, `BKI-XXX_e2e.txt`, `BKI-XXX_ui.png`, `regression_unit.txt`. |

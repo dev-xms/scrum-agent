@@ -10,6 +10,7 @@ mkdir -p \
   "$ROOT/requirements" \
   "$ROOT/src" \
   "$ROOT/tests" \
+  "$ROOT/test-results" \
   "$ROOT/scripts" \
   "$ROOT/references"
 
@@ -20,6 +21,7 @@ touch \
   "$ROOT/requirements/.gitkeep" \
   "$ROOT/src/.gitkeep" \
   "$ROOT/tests/.gitkeep" \
+  "$ROOT/test-results/.gitkeep" \
   "$ROOT/references/.gitkeep"
 
 # Append-only audit log entries for scripts-records.log

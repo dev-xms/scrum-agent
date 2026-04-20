@@ -37,8 +37,8 @@ No code, config, or file change may execute outside the 6-phase workflow.
 
 For stories where Phase 2 impact map includes HTML or CSS files:
 - Phase 3 (QA): generate Playwright E2E spec in `tests/e2e/BKI-XXX.spec.js` using `data-testid` selectors only.
-- Phase 5 (Audit): run `python3 scripts/run_e2e_tests.py BKI-XXX`, capture screenshot via `python3 scripts/capture_screenshot.py BKI-XXX`.
-- DoD hard gate: `logs/test-results/BKI-XXX_e2e.txt` and `logs/screenshots/BKI-XXX_ui.png` must exist.
+- Phase 5 (Audit): run `python3 scripts/run_e2e_tests.py BKI-XXX Sprint-N-BKI-XXX`, capture screenshot via `python3 scripts/capture_screenshot.py BKI-XXX Sprint-N-BKI-XXX`.
+- DoD hard gate: `test-results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt` and `test-results/Sprint-N-BKI-XXX/BKI-XXX_ui.png` must exist.
 
 For stories with no UI: note "E2E not applicable" in Phase 3 and Phase 5 logs.
 

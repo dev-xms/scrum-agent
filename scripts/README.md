@@ -35,9 +35,10 @@ python3 scripts/move_file.py logs/scripts-records.log logs/archive/BKI-XXX_scrip
 | `list_dir.py` | `ls` | Any | `[path]` (default: `.`) |
 | `move_file.py` | `mv` | 6 (log rotation) | `<src> <dst>` |
 | `copy_file.py` | `cp` | 6 | `<src> <dst>` |
-| `run_unit_tests.py` | `npm test` / `pytest` | 3, 4, 5 | `<BKI-ID>` |
-| `run_e2e_tests.py` | `npm run test:e2e` | 3, 4, 5 | `<BKI-ID>` |
-| `capture_screenshot.py` | `npx serve` + `npx playwright screenshot` | 5 | `<BKI-ID>` |
+| `make_dir.py` | `mkdir -p` | Any | `<path>` |
+| `run_unit_tests.py` | `npm test` / `pytest` | 3, 4, 5 | `<BKI-ID> [sprint-folder]` |
+| `run_e2e_tests.py` | `npm run test:e2e` | 3, 4, 5 | `<BKI-ID> [sprint-folder]` |
+| `capture_screenshot.py` | `npx serve` + `npx playwright screenshot` | 5 | `<BKI-ID> [sprint-folder]` |
 | `script_logger.py` | — | Internal (imported) | N/A — not invoked directly |
 
 ---
@@ -66,14 +67,17 @@ Replaces `mv`. Moves a file or directory. Creates destination parent directories
 ### `copy_file.py <src> <dst>`
 Replaces `cp`. Copies a file. Creates destination parent directories as needed. Used by Phase 6 for archival when the source must be preserved.
 
-### `run_unit_tests.py <BKI-ID>`
-Runs unit tests (Jest if `package.json` present, else pytest). Saves full output to `logs/test-results/<BKI-ID>_unit.txt`. Exits 1 if tests fail — hard gate in Phase 3 (Red) and Phase 5 (DoD).
+### `make_dir.py <path>`
+Replaces `mkdir -p`. Creates a directory and all parent directories if they don't exist. Logs invocation and result to `scripts-records.log`. Use when any phase needs to create a new directory (e.g., `tests/e2e/`).
 
-### `run_e2e_tests.py <BKI-ID>`
-Runs Playwright E2E test suite (`npm run test:e2e`). Saves output to `logs/test-results/<BKI-ID>_e2e.txt`. Required for UI stories (Phase 2 impact map includes HTML/CSS). Exits 1 on failure.
+### `run_unit_tests.py <BKI-ID> [sprint-folder]`
+Runs unit tests (Jest if `package.json` present, else pytest). Saves full output to `test-results/<sprint-folder>/<BKI-ID>_unit.txt` (sprint-folder defaults to BKI-ID if omitted). Exits 1 if tests fail — hard gate in Phase 3 (Red) and Phase 5 (DoD).
 
-### `capture_screenshot.py <BKI-ID>`
-Starts a static server (`npx serve src -p 3000`), captures a Playwright screenshot of `http://localhost:3000`, saves to `logs/screenshots/<BKI-ID>_ui.png`, then kills the server. Required DoD artifact for UI stories in Phase 5.
+### `run_e2e_tests.py <BKI-ID> [sprint-folder]`
+Runs Playwright E2E test suite (`npm run test:e2e`). Saves output to `test-results/<sprint-folder>/<BKI-ID>_e2e.txt`. Required for UI stories (Phase 2 impact map includes HTML/CSS). Exits 1 on failure.
+
+### `capture_screenshot.py <BKI-ID> [sprint-folder]`
+Starts a static server (`npx serve src -p 3000`), captures a Playwright screenshot of `http://localhost:3000`, saves to `test-results/<sprint-folder>/<BKI-ID>_ui.png`, then kills the server. Required DoD artifact for UI stories in Phase 5.
 
 ### `script_logger.py`
 Shared utility module. Not invoked directly. Imported by all other Python scripts via `sys.path.insert`. Provides `log_invocation(script, args)` and `log_result(script, status, detail)`. Writes to `logs/scripts-records.log` in append-only mode.
