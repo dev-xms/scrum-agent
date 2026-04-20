@@ -26,7 +26,7 @@ This document tracks historical process failures and successes to ensure continu
     *   *Rule*: No raw bash in skills/commands. Use `scripts/` equivalents only. Full policy in `references/workflow-guidance.md`.
 
 *   **E2E Gap in Phase 5 DoD**: Sprint 1 had no UI test results, no screenshot, no Playwright spec — DoD was incomplete for UI stories.
-    *   *Rule*: UI stories must produce `test-results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt` and `test-results/Sprint-N-BKI-XXX/BKI-XXX_ui.png`. Spec lives in `tests/e2e/BKI-XXX.spec.js`. Hard gate enforced in Phase 5.
+    *   *Rule*: UI stories must produce `tests/results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt` and `tests/results/Sprint-N-BKI-XXX/BKI-XXX_ui.png`. Spec lives in `tests/e2e/BKI-XXX.spec.js`. Hard gate enforced in Phase 5.
 
 *   **Skills ↔ Commands Drift**: `.claude/commands/` files were never updated during Sprint 1 — stale by end of sprint, causing `/slash-commands` to use outdated tool permissions.
     *   *Rule*: Phase 6 Section 4b drift check required before closing. `skills/*.md` = source of truth.
@@ -62,7 +62,7 @@ This document tracks historical process failures and successes to ensure continu
 ### Lessons Learned
 
 *   **Test artifacts belong at top-level, not in `logs/`**: `logs/test-results/` and `logs/screenshots/` mixed test output with audit logs. `logs/` is for audit trail only.
-    *   *Rule*: All test artifacts (unit txt, e2e txt, screenshots) go to `test-results/Sprint-N-BKI-XXX/`. `logs/` is audit-only.
+    *   *Rule*: All test artifacts (unit txt, e2e txt, screenshots) go to `tests/results/Sprint-N-BKI-XXX/`. `logs/` is audit-only.
 
 *   **Artifacts not sprint-scoped → overwritten on next sprint**: Flat `test-results/` means Sprint 3 artifacts overwrite Sprint 2 artifacts.
     *   *Rule*: Sprint folder format `Sprint-N-BKI-XXX` (e.g. `Sprint-2-BKI-004`). All 3 gate scripts take `[sprint-folder]` as second arg; defaults to `BKI-XXX` for backwards compat.
@@ -72,6 +72,20 @@ This document tracks historical process failures and successes to ensure continu
 
 ---
 
-## 🌱 Pending BKI Seed — Regression Gate Formalization (registered: 2026-04-20)
-- **Summary**: Phase 5 regression gate (Section 2c) was added reactively mid-retro and never executed for BKI-004. Needs a formal requirements doc with Gherkin ACs covering: regression run passes, regression artifacts exist, regression failure blocks story closure.
-- **Action**: Phase 1 of next sprint — BA must convert this to a `requirements/BKI-XXX.md` story before any execution.
+## ~~🌱 Pending BKI Seed — Regression Gate Formalization (registered: 2026-04-20)~~ ✅ EXECUTED as BKI-001 (2026-04-20)
+- **Summary**: Delivered in Sprint 3 — test runner scripts relocated to `tests/scripts/`, regression artifacts enforced, 11-test suite covers all 4 ACs.
+
+---
+
+## 🏁 Sprint 3 Retrospective (BKI-001) — 2026-04-20
+
+### Lessons Learned
+
+*   **Test runner scripts belong in `tests/scripts/`, not `scripts/`**: `scripts/` is for workflow gate scripts (scrum_guard, invest_validator, read_file, etc). Mixing test runners in the same dir couples workflow infra to project-specific test tooling.
+    *   *Rule*: All `run_unit_tests.py`, `run_e2e_tests.py`, `capture_screenshot.py` variants live in `tests/scripts/`. The `sys.path.insert` in these scripts must resolve `script_logger.py` from `scripts/` via `os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'scripts')`.
+
+*   **Skills loaded from disk at skill-invoke time — stale skill content shown in session**: When a skill is invoked via the `Skill` tool, the skill file content at that moment is loaded. If Phase 4 updates a skill file, Phase 5's loaded skill content will show old paths. The executor must use the updated paths from the implementation, not the loaded skill text.
+    *   *Rule*: Phase 5 and Phase 6 executors must cross-check loaded skill content against the current file on disk when path references are involved. If drift is detected, use the on-disk version.
+
+*   **Regression artifact naming is inherent in the BKI-ID pattern**: `f"{artifact_dir}/{bki}_unit.txt"` with `bki="regression"` already produces `regression_unit.txt`. No branching or special-casing needed. The `regression` mode is just a conventional BKI-ID value.
+    *   *Rule*: Document this invariant in `tests/scripts/README.md` so future sprints don't add unnecessary branching.

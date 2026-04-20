@@ -6,7 +6,7 @@ Canonical decisions governing the scrum-agent workflow. Updated each sprint via 
 
 ## Script Execution Policy (enforced since Sprint 1, 2026-04-20)
 
-All bash execution goes through `scripts/`. No raw `cat`, `ls`, `mv`, `cp`, `npm`, `npx`, `pytest` in skills or commands.
+All bash execution goes through `scripts/` (workflow gates) or `tests/scripts/` (test runners). No raw `cat`, `ls`, `mv`, `cp`, `npm`, `npx`, `pytest` in skills or commands.
 
 | Banned | Replacement |
 |---|---|
@@ -14,10 +14,10 @@ All bash execution goes through `scripts/`. No raw `cat`, `ls`, `mv`, `cp`, `npm
 | `ls [path]` | `python3 scripts/list_dir.py [path]` |
 | `mv <src> <dst>` | `python3 scripts/move_file.py <src> <dst>` |
 | `cp <src> <dst>` | `python3 scripts/copy_file.py <src> <dst>` |
-| `npm test` | `python3 scripts/run_unit_tests.py BKI-XXX` |
-| `npm run test:e2e` | `python3 scripts/run_e2e_tests.py BKI-XXX` |
-| `npx playwright ...` / `npx serve ...` | `python3 scripts/capture_screenshot.py BKI-XXX` |
-| `pytest` | `python3 scripts/run_unit_tests.py BKI-XXX` |
+| `npm test` | `python3 tests/scripts/run_unit_tests.py BKI-XXX` |
+| `npm run test:e2e` | `python3 tests/scripts/run_e2e_tests.py BKI-XXX` |
+| `npx playwright ...` / `npx serve ...` | `python3 tests/scripts/capture_screenshot.py BKI-XXX` |
+| `pytest` | `python3 tests/scripts/run_unit_tests.py BKI-XXX` |
 
 **Why**: Every invocation writes to `logs/scripts-records.log`. Audit trail is complete and cannot be bypassed.
 
@@ -37,8 +37,8 @@ No code, config, or file change may execute outside the 6-phase workflow.
 
 For stories where Phase 2 impact map includes HTML or CSS files:
 - Phase 3 (QA): generate Playwright E2E spec in `tests/e2e/BKI-XXX.spec.js` using `data-testid` selectors only.
-- Phase 5 (Audit): run `python3 scripts/run_e2e_tests.py BKI-XXX Sprint-N-BKI-XXX`, capture screenshot via `python3 scripts/capture_screenshot.py BKI-XXX Sprint-N-BKI-XXX`.
-- DoD hard gate: `test-results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt` and `test-results/Sprint-N-BKI-XXX/BKI-XXX_ui.png` must exist.
+- Phase 5 (Audit): run `python3 tests/scripts/run_e2e_tests.py BKI-XXX Sprint-N-BKI-XXX`, capture screenshot via `python3 tests/scripts/capture_screenshot.py BKI-XXX Sprint-N-BKI-XXX`.
+- DoD hard gate: `tests/results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt` and `tests/results/Sprint-N-BKI-XXX/BKI-XXX_ui.png` must exist.
 
 For stories with no UI: note "E2E not applicable" in Phase 3 and Phase 5 logs.
 
@@ -67,4 +67,6 @@ Procedure: `python3 scripts/list_dir.py scripts/` → compare to table in `scrip
 
 ## Log Rotation Scope (enforced since Sprint 1, 2026-04-20)
 
-Both `logs/log.md` AND `logs/scripts-records.log` are rotated in Phase 6 to `logs/archive/BKI-XXX_log.md` and `logs/archive/BKI-XXX_scripts-records.log` respectively.
+Both `logs/log.md` AND `logs/scripts-records.log` are rotated in Phase 6 Section 5b (after the COMPLETED log entry) to `logs/archive/BKI-XXX_log.md` and `logs/archive/BKI-XXX_scripts-records.log` respectively.
+
+**Why Section 5b, not Section 2**: The Phase 6 COMPLETED entry must be written to `logs/log.md` (Section 5) before rotation so the final audit record is captured in the archive. Rotating in Section 2 orphans the completion entry.
