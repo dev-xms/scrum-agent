@@ -1,9 +1,13 @@
 import sys
+import os
 import re
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from script_logger import log_invocation, log_result
 
 def validate_invest(content):
     gaps = []
-    
+
     # 1. Check for Standard Story Format
     if not re.search(r"As a .* I want to .* so that .*", content, re.IGNORECASE | re.DOTALL):
         gaps.append("Format error: Story must follow 'As a... I want to... so that...'")
@@ -29,22 +33,28 @@ if __name__ == "__main__":
         print("Usage: python3 invest_validator.py <story_file>")
         sys.exit(1)
 
+    story_file = sys.argv[1]
+    log_invocation("invest_validator.py", [story_file])
+
     try:
-        with open(sys.argv[1], 'r') as f:
+        with open(story_file, 'r') as f:
             story_content = f.read()
-            
+
         validation_gaps = validate_invest(story_content)
-        
+
         if validation_gaps:
             print("--- DoR GATE: FAILED ---")
             for gap in validation_gaps:
                 print(f"FAILED: {gap}")
-            sys.exit(1) # Block the gate
+            log_result("invest_validator.py", "FAILED", f"{len(validation_gaps)} gaps in {story_file}")
+            sys.exit(1)  # Block the gate
         else:
             print("--- DoR GATE: PASSED ---")
             print("INVEST Audit successful. Requirement is Ready.")
-            sys.exit(0) # Allow transition to Phase 2
-            
+            log_result("invest_validator.py", "OK", story_file)
+            sys.exit(0)  # Allow transition to Phase 2
+
     except FileNotFoundError:
-        print(f"Error: File {sys.argv[4]} not found.")
+        log_result("invest_validator.py", "ERROR", f"file not found: {story_file}")
+        print(f"Error: File {story_file} not found.")
         sys.exit(1)
