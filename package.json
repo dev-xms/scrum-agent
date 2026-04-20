@@ -1,0 +1,27 @@
+{
+  "name": "scrum-agent",
+  "version": "1.0.0",
+  "description": "**Scrum Agent** is a high-precision, stateful engineering workflow designed for Claude Code. It implements a \"persistent, compounding artifact\" architecture—inspired by the **LLM Wiki** pattern—and enforces strict **Scrum process discipline** to ensure every unit of work is verifiable, surgical, and documented in an append-only audit trail.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-xms/scrum-agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dev-xms/scrum-agent/issues"
+  },
+  "homepage": "https://github.com/dev-xms/scrum-agent#readme",
+  "dependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}

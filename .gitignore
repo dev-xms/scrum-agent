@@ -17,19 +17,19 @@ docs/**
 # Python venv
 .env/
 
-# Node
-node_modules
-package-lock.json
-package.json
+# # Node
+# node_modules
+# package-lock.json
+# package.json
 
-# Test
-playwright.config.js
-.pytest_cache
+# # Test
+# playwright.config.js
+# .pytest_cache
 
-# Project file
-backlog
-logs
-requirements
-src
-tests
-references/retro-knowledge.md
+# # Project file
+# backlog
+# logs
+# requirements
+# src
+# tests
+# references/retro-knowledge.md

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- backlog_id: BKI-001, BKI-002 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Smart Plate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <div class="header-row">
+      <h1>The Smart Plate</h1>
+      <button data-testid="btn-dark-mode" type="button">Dark Mode</button>
+    </div>
+
+    <form id="recipe-form">
+      <input data-testid="input-title" type="text" placeholder="Title" />
+      <textarea data-testid="input-ingredients" placeholder="Ingredients"></textarea>
+      <textarea data-testid="input-instructions" placeholder="Instructions"></textarea>
+      <button data-testid="btn-save" type="submit">Save</button>
+      <p data-testid="error-message" class="error hidden"></p>
+    </form>
+
+    <input data-testid="input-search" type="text" placeholder="Search recipes..." />
+
+    <ul id="recipe-list">
+      <li data-testid="empty-state" class="empty">No recipes yet</li>
+    </ul>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- /opt/homebrew/opt/python@3.13/bin/python3.13
+cachedir: .pytest_cache
+rootdir: /Users/i062308/Code/idea/scrum-agent
+collecting ... collected 13 items
+
+tests/test_BKI_001.py::test_us1_save_recipe_persists PASSED              [  7%]
+tests/test_BKI_001.py::test_us1_save_recipe_assigns_id PASSED            [ 15%]
+tests/test_BKI_001.py::test_us1_empty_title_raises PASSED                [ 23%]
+tests/test_BKI_001.py::test_us1_whitespace_title_raises PASSED           [ 30%]
+tests/test_BKI_001.py::test_us1_empty_ingredients_raises PASSED          [ 38%]
+tests/test_BKI_001.py::test_us1_empty_instructions_raises PASSED         [ 46%]
+tests/test_BKI_001.py::test_us1_invalid_save_does_not_persist PASSED     [ 53%]
+tests/test_BKI_001.py::test_us2_get_recipes_returns_all PASSED           [ 61%]
+tests/test_BKI_001.py::test_us2_empty_store_returns_empty_list PASSED    [ 69%]
+tests/test_BKI_001.py::test_us2_recipe_titles_visible PASSED             [ 76%]
+tests/test_BKI_001.py::test_us3_delete_removes_recipe PASSED             [ 84%]
+tests/test_BKI_001.py::test_us3_delete_only_removes_target PASSED        [ 92%]
+tests/test_BKI_001.py::test_us3_delete_nonexistent_raises PASSED         [100%]
+
+============================== 13 passed in 0.01s ==============================

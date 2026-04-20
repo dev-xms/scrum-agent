@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- /opt/homebrew/opt/python@3.13/bin/python3.13
+cachedir: .pytest_cache
+rootdir: /Users/i062308/Code/idea/scrum-agent
+collecting ... collected 8 items
+
+tests/test_BKI_002.py::test_us4_search_partial_match PASSED              [ 12%]
+tests/test_BKI_002.py::test_us4_search_case_insensitive PASSED           [ 25%]
+tests/test_BKI_002.py::test_us4_search_no_match_returns_empty PASSED     [ 37%]
+tests/test_BKI_002.py::test_us4_search_empty_query_returns_all PASSED    [ 50%]
+tests/test_BKI_002.py::test_us4_search_whitespace_query_returns_all PASSED [ 62%]
+tests/test_BKI_002.py::test_us4_search_exact_match PASSED                [ 75%]
+tests/test_BKI_002.py::test_us4_search_does_not_match_ingredients PASSED [ 87%]
+tests/test_BKI_002.py::test_us4_search_empty_store PASSED                [100%]
+
+============================== 8 passed in 0.01s ===============================

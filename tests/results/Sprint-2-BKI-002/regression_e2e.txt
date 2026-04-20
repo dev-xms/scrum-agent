@@ -1,0 +1,18 @@
+
+Running 14 tests using 2 workers
+
+[1A[2K[1/14] tests/e2e/BKI-002.spec.js:22:1 › US4: partial name match shows only matching recipes
+[1A[2K[2/14] tests/e2e/BKI-001.spec.js:16:1 › US1: valid form save persists recipe and shows in list
+[1A[2K[3/14] tests/e2e/BKI-002.spec.js:33:1 › US4: no match shows empty-state message
+[1A[2K[4/14] tests/e2e/BKI-001.spec.js:27:1 › US1: empty title shows validation error and no recipe saved
+[1A[2K[5/14] tests/e2e/BKI-002.spec.js:44:1 › US4: clearing search restores all recipes
+[1A[2K[6/14] tests/e2e/BKI-001.spec.js:36:1 › US1: empty ingredients shows validation error
+[1A[2K[7/14] tests/e2e/BKI-002.spec.js:59:1 › US6: clicking dark mode toggle adds dark class to body
+[1A[2K[8/14] tests/e2e/BKI-001.spec.js:44:1 › US1: empty instructions shows validation error
+[1A[2K[9/14] tests/e2e/BKI-002.spec.js:64:1 › US6: clicking dark mode toggle again removes dark class
+[1A[2K[10/14] tests/e2e/BKI-001.spec.js:54:1 › US2: saved recipes appear on reload
+[1A[2K[11/14] tests/e2e/BKI-002.spec.js:71:1 › US6: dark mode preference persists after reload
+[1A[2K[12/14] tests/e2e/BKI-001.spec.js:67:1 › US2: empty state shown when no recipes
+[1A[2K[13/14] tests/e2e/BKI-001.spec.js:73:1 › US3: delete removes recipe from list
+[1A[2K[14/14] tests/e2e/BKI-001.spec.js:85:1 › US3: delete only removes targeted recipe
+[1A[2K  14 passed (1.3s)
