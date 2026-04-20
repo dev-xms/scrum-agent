@@ -63,28 +63,22 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
+## 5. Scrum Agent Governance
+**Hard Rules**: All non-trivial changes MUST follow the 6-phase lifecycle sequentially.
+- **Traceability**: Mandatory **Log-before-act** protocol. Log every atomic step to `log.md` *before* execution.
+- **Boundaries**: Plan artifacts (e.g., `docs/plans/`) are read-only; they must enter the workflow via Phase 1. Trivial tasks (typos) require user confirmation and logging.
+- **Sprint Memory**: New BKIs are registered only during Phase 6 via `references/retro-knowledge.md`.
+
+### 🔄 6-Phase Lifecycle Commands
+1. `/scrum-ba-intake`: Refine requirements & enforce **INVEST** (DoR).
+2. `/scrum-architect-design`: Surgical Impact Map & ADR planning.
+3. `/tdd-spec-generator`: Generate failing test suite (Red Phase).
+4. `/scrum-executor`: Surgical implementation & verification (Green Phase).
+5. `/tdd-verifier`: Final Audit against **Definition of Done (DoD)**.
+6. `/scrum-retro-analyst`: Log rotation & update `retro-knowledge.md`.
+
+---
+
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
-
----
-
-## 5. Scrum Agent Workflow (6-Phase Lifecycle)
-
-You must follow these phases sequentially for every non-trivial task:
-1.  **Intake (BA)**: Ingest raw requirements from the `requirements/` folder and cross-reference them with `references/retro-knowledge.md` to avoid historical mistakes.
-    *   *Command*: `/scrum-ba-intake [raw-requirement]`
-2.  **Design (Architect)**: Perform **Surgical Impact Analysis** to identify the minimum set of files required and document technical tradeoffs in an Architectural Decision Record (ADR).
-    *   *Command*: `/scrum-architect-design`
-3.  **TDD (QA)**: Define a **failing (Red) test suite** that directly maps to the Gherkin Acceptance Criteria defined in Phase 1.
-    *   *Command*: `/tdd-spec-generator`
-4.  **Execute (Dev)**: Perform surgical implementation to pass the tests while adhering to the **Simplicity First** principle (no speculative code or "ghost work").
-    *   *Command*: `/scrum-executor`
-5.  **Verify (Audit)**: Run the full test suite one final time to ensure consistency, verify the **Definition of Done (DoD)**, and update `CHANGELOG.md`.
-    *   *Command*: `/tdd-verifier`
-6.  **Retro (Master)**: Perform **Log Rotation** to preserve session memory and append new technical insights to `references/retro-knowledge.md`.
-    *   *Command*: `/scrum-retro-analyst`
-
----
-
-**Traceability Rule**: You **MUST** log every atomic step to `log.md` using the **Log-before-act protocol** to ensure the audit trail remains intact even if a session ends unexpectedly. Every phase transition must be recorded before starting the phase (e.g., using `!echo` or `scrum_guard.py`) to maintain deterministic session resumption.
 
 ---

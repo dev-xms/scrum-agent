@@ -8,8 +8,10 @@ from script_logger import log_invocation, log_result
 def validate_invest(content):
     gaps = []
 
-    # 1. Check for Standard Story Format
-    if not re.search(r"As a .* I want to .* so that .*", content, re.IGNORECASE | re.DOTALL):
+    # 1. Check for Standard Story Format (supports bold markers per gherkin-templates.md)
+    if not re.search(r"As a\b", content, re.IGNORECASE) or \
+       not re.search(r"I want to\b", content, re.IGNORECASE) or \
+       not re.search(r"[Ss]o that\b", content, re.IGNORECASE):
         gaps.append("Format error: Story must follow 'As a... I want to... so that...'")
 
     # 2. Check for Gherkin Acceptance Criteria (Functional)

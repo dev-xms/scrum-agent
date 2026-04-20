@@ -6,6 +6,7 @@
 
 # Playwright 个人工作区配置
 .playwright-mcp/**
+playwright-output
 
 # MacOS 系统文件
 .DS_Store
@@ -15,3 +16,20 @@ docs/**
 
 # Python venv
 .env/
+
+# Node
+node_modules
+package-lock.json
+package.json
+
+# Test
+playwright.config.js
+.pytest_cache
+
+# Project file
+backlog
+logs
+requirements
+src
+tests
+references/retro-knowledge.md

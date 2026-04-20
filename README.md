@@ -33,8 +33,8 @@ Every unit of work is assigned a unique **BKI-ID** and moves through these seque
 | **2: Design** | Architect | `scrum-architect-design` | Performs **Surgical Impact Analysis** to identify the minimum file set. Produces an ADR and Impact Map. |
 | **3: QA** | QA Engineer | `tdd-spec-generator` | Generates a **failing (Red)** test suite mapped directly to Gherkin scenarios to define success. |
 | **4: Dev** | Developer | `scrum-executor` | Performs surgical implementation to reach a **"Green"** test state. Cleans up "orphan" code. |
-| **5: Audit** | Auditor | `tdd-verifier` | Final reconciliation against the **Definition of Done (DoD)**. Updates the project `CHANGELOG.md`. |
-| **6: Retro** | Scrum Master | `scrum-retro-analyst` | Conducts **Log Rotation**, archives the audit trail, and updates `retro-knowledge.md`. |
+| **5: Audit** | Auditor | `tdd-verifier` | Final reconciliation against the **Definition of Done (DoD)**. Verifies surgical integrity and 100% Gherkin AC coverage. |
+| **6: Retro** | Scrum Master | `scrum-retro-analyst` | Writes **CHANGELOG.md**, conducts **Log Rotation**, archives the audit trail, and updates `retro-knowledge.md`. |
 
 ---
 
@@ -53,9 +53,35 @@ To prevent the active `log.md` from exceeding LLM context limits, Phase 6 enforc
 #### 4. Traceability & Retro-Knowledge
 Every artifact created or modified includes a `backlog_id: BKI-XXX` in its frontmatter to trace it back to the original requirement. The `retro-knowledge.md` file serves as the project's long-term intelligence, capturing lessons learned to prevent future sprints from repeating historical mistakes.
 
+#### 5. Gate Scripts (`scripts/`)
+All test execution and artifact capture is delegated to gate scripts — never invoked directly via `npm`/`npx`/`pytest`. Each script accepts a `BKI-XXX` argument, saves the required artifact, and exits non-zero on failure.
+
+| Script | Invoked by | Does |
+| :--- | :--- | :--- |
+| `init.sh [dir]` | Setup (once) | Creates project directory skeleton (`backlog/`, `logs/`, `src/`, `tests/results/`, etc.) |
+| `scrum_guard.py --phase N --session ID --msg "..."` | All phases | Appends timestamped entry to `logs/log.md`; enforces phase directory contract |
+| `invest_validator.py <story_file>` | Phase 1 (DoR gate) | Validates INVEST criteria and Gherkin format; exits 1 if DoR not met |
+| `run_unit_tests.py BKI-XXX Sprint-N-BKI-XXX` | Phase 3 (Red check), Phase 4, Phase 5 (DoD) | Runs Jest/pytest, saves `tests/results/Sprint-N-BKI-XXX/BKI-XXX_unit.txt`, exits 1 on failure |
+| `run_e2e_tests.py BKI-XXX Sprint-N-BKI-XXX` | Phase 3 (E2E Red check), Phase 4, Phase 5 (DoD) | Runs Playwright suite, saves `tests/results/Sprint-N-BKI-XXX/BKI-XXX_e2e.txt`, exits 1 on failure |
+| `capture_screenshot.py BKI-XXX Sprint-N-BKI-XXX` | Phase 5 (DoD, UI stories) | Starts static server, saves `tests/results/Sprint-N-BKI-XXX/BKI-XXX_ui.png`, kills server |
+| `read_file.py <path>` | Any phase needing file inspection | Replaces `cat`; prints file content, logs invocation to `scripts-records.log` |
+| `list_dir.py [path]` | Phase 1, Phase 4, Phase 6 | Replaces `ls`; lists directory contents, logs invocation |
+| `move_file.py <src> <dst>` | Phase 6 (log rotation) | Replaces `mv`; moves file or directory, logs invocation |
+| `copy_file.py <src> <dst>` | Phase 6 | Replaces `cp`; copies file, logs invocation |
+| `make_dir.py <path>` | Any phase needing directory creation | Replaces `mkdir -p`; creates directory and parents, logs invocation |
+| `script_logger.py` | All scripts (internal) | Shared utility: appends INVOKE/RESULT entries to `logs/scripts-records.log` |
+
+This ensures every script invocation produces a traceable audit record and skills cannot bypass the audit trail.
+
+> **`logs/scripts-records.log`**: append-only record of every script invocation and result. Rotated by Phase 6 alongside `logs/log.md` to `logs/archive/BKI-XXX_scripts-records.log`.
+
 ---
 
 ### 🚀 Implementation Requirements
-1.  **Deployment**: Copy the `.claude/skills/` directory and supporting `scripts/` (e.g., `scrum_guard.py`, `invest_validator.py`) to the project root.
+1.  **Deployment**: Copy `skills/`, `scripts/`, `tests/scripts/`, and `references/` to the project root. Run `bash scripts/init.sh` to create the required folder skeleton.
+    - Default target: current directory (`bash scripts/init.sh`)
+    - Custom target: `bash scripts/init.sh ./my-project`
+    - Idempotent: safe to re-run; existing files are not overwritten
+    - Consult `references/project-structure-guide.md` for language-specific `src/` and `tests/unit/` layouts (Java, Go, Python, TypeScript, React).
 2.  **Frontmatter Standards**: Skills must define `allowed-tools` to grant Claude permission to execute scripts without per-use approval.
 3.  **Session Resume**: Users should begin every session with the **Session Resume Protocol**, asking Claude to review the log and report open sprints to prevent redundant "ghost work".
